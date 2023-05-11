@@ -41,23 +41,26 @@ public class Main {
         return text.toString();
     }
 
+    public static void calculateNumber(String text) {
+        switch (text.length()) {
+            case 3:
+                number3.getAndIncrement();
+                break;
+            case 4:
+                number4.getAndIncrement();
+                break;
+            case 5:
+                number5.getAndIncrement();
+                break;
+        }
+    }
+
     public static void generateThreads(String[] texts) {
         new Thread(() -> {
             for (String text :
                     texts) {
                 if (allSame(text)) {
-                    switch (text.length()) {
-                        case 3:
-                            number3.getAndIncrement();
-                            continue;
-                        case 4:
-                            number4.getAndIncrement();
-                            continue;
-                        case 5:
-                            number5.getAndIncrement();
-                            continue;
 
-                    }
                 }
             }
         }).start();
@@ -65,50 +68,31 @@ public class Main {
             for (String text :
                     texts) {
                 if (isPalindrome(text)) {
-                    switch (text.length()) {
-                        case 3:
-                            number3.getAndIncrement();
-                            break;
-                        case 4:
-                            number4.getAndIncrement();
-                            break;
-                        case 5:
-                            number5.getAndIncrement();
-                            break;
-                    }
+                    calculateNumber(text);
                 }
             }
-
         }).start();
         new Thread(() -> {
             for (String text :
                     texts) {
                 if (isGrowing(text)) {
-                    switch (text.length()) {
-                        case 3:
-                            number3.getAndIncrement();
-                            break;
-                        case 4:
-                            number4.getAndIncrement();
-                            break;
-                        case 5:
-                            number5.getAndIncrement();
-                            break;
-                        default:
-                            continue;
-                    }
+                    calculateNumber(text);
                 }
             }
 
         }).start();
     }
-
-    public static void main(String[] args) {
+    public static String [] randomNicknameArray() {
         Random random = new Random();
         String[] texts = new String[100_000];
         for (int i = 0; i < texts.length; i++) {
             texts[i] = generateText("abc", 3 + random.nextInt(3));
         }
+        return texts;
+    }
+
+    public static void main(String[] args) {
+        String texts [] = randomNicknameArray();
         generateThreads(texts);
         System.out.println(number3);
         System.out.println(number4);
